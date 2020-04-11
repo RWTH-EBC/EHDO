@@ -1,3 +1,5 @@
+![E.ON EBC RWTH Aachen University](./resources/EBC_Logo.png)
+
 # Optimization model of EHDO
 
 This repostitory contains the **calculation code** of the webtool **EHDO**.
