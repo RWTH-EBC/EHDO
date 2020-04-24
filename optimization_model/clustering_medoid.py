@@ -12,7 +12,7 @@ Developed by:   E.ON Energy Research Center,
 Contact:        Marco Wirtz 
                 marco.wirtz@eonerc.rwth-aachen.de
 
-                k_mediods clustering implemented by Thomas Schütz (2015).
+                k-medoids clustering implemented by Thomas Schütz (2015).
 """
 
 from __future__ import division

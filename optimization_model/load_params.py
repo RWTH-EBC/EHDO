@@ -244,10 +244,10 @@ def load_params(all_models, flags):
     devs["CHP"] = {
         "feasible":  all_models["CHP"].enabled,
         "inv_var":   all_models["CHP"].inv_var,
-        "eta_el":    all_models["CHP"].eta_el / 100, # given in percent
-        "eta_th":    all_models["CHP"].eta_th / 100, # given in percent
+        "eta_el":    all_models["CHP"].eta_el / 100,
+        "eta_th":    all_models["CHP"].eta_th / 100,
         "life_time": all_models["CHP"].life_time,
-        "cost_om":   all_models["CHP"].cost_om / 100, # given in percent
+        "cost_om":   all_models["CHP"].cost_om / 100,
         "min_cap":   all_models["CHP"].min_cap,
         "max_cap":   all_models["CHP"].max_cap,
     }
@@ -361,10 +361,10 @@ def load_params(all_models, flags):
     devs["BCHP"] = {
         "feasible":  all_models["BiomassCHP"].enabled,
         "inv_var":   all_models["BiomassCHP"].inv_var,
-        "eta_el":    all_models["BiomassCHP"].eta_el / 100, # given in percent
-        "eta_th":    all_models["BiomassCHP"].eta_th / 100, # given in percent
+        "eta_el":    all_models["BiomassCHP"].eta_el / 100,
+        "eta_th":    all_models["BiomassCHP"].eta_th / 100,
         "life_time": all_models["BiomassCHP"].life_time,
-        "cost_om":   all_models["BiomassCHP"].cost_om / 100, # given in percent
+        "cost_om":   all_models["BiomassCHP"].cost_om / 100,
         "min_cap":   all_models["BiomassCHP"].min_cap,
         "max_cap":   all_models["BiomassCHP"].max_cap,
     }
@@ -384,10 +384,10 @@ def load_params(all_models, flags):
     devs["WCHP"] = {
         "feasible":  all_models["WasteCHP"].enabled,
         "inv_var":   all_models["WasteCHP"].inv_var,
-        "eta_el":    all_models["WasteCHP"].eta_el / 100, # given in percent
-        "eta_th":    all_models["WasteCHP"].eta_th / 100, # given in percent
+        "eta_el":    all_models["WasteCHP"].eta_el / 100,
+        "eta_th":    all_models["WasteCHP"].eta_th / 100,
         "life_time": all_models["WasteCHP"].life_time,
-        "cost_om":   all_models["WasteCHP"].cost_om / 100, # given in percent
+        "cost_om":   all_models["WasteCHP"].cost_om / 100,
         "min_cap":   all_models["WasteCHP"].min_cap,
         "max_cap":   all_models["WasteCHP"].max_cap,
     }
@@ -510,7 +510,8 @@ def load_params(all_models, flags):
 
     ### Energy costs ###
     # Electricity costs
-    param["price_supply_el"] = all_models["EnergyCosts"].price_supply_el
+    param["enable_supply_el"] = all_models["EnergyCosts"].enable_supply_el
+    param["price_supply_el"]  = all_models["EnergyCosts"].price_supply_el
     
     if all_models["EnergyCosts"].enable_price_cap_el:
         param["price_cap_el"] =  all_models["EnergyCosts"].price_cap_el  # kEUR/MW
@@ -529,7 +530,8 @@ def load_params(all_models, flags):
             
         
     # Natural gas
-    param["price_supply_gas"] = all_models["EnergyCosts"].price_supply_gas
+    param["enable_supply_gas"] = all_models["EnergyCosts"].enable_supply_gas
+    param["price_supply_gas"]  = all_models["EnergyCosts"].price_supply_gas
     if all_models["EnergyCosts"].enable_price_cap_gas:
         param["price_cap_gas"] = all_models["EnergyCosts"].price_cap_gas
         result_dict["enable_price_cap_gas"] = True  # for if-statement in result.html
@@ -546,18 +548,21 @@ def load_params(all_models, flags):
 
     
     # Biomass
+    param["enable_supply_biomass"]    = all_models["EnergyCosts"].enable_supply_biomass
     param["price_biomass"]            = all_models["EnergyCosts"].price_biomass  # EUR/kW
     param["enable_supply_limit_biom"] = all_models["EnergyCosts"].enable_supply_limit_biomass  
     param["supply_limit_biomass"]     = all_models["EnergyCosts"].supply_limit_biomass * 1000  #kWh  
     
     
     # Hydrogen
+    param["enable_supply_hydrogen"]       = all_models["EnergyCosts"].enable_supply_hydrogen
     param["price_hydrogen"]               = all_models["EnergyCosts"].price_hydrogen  # EUR/kW
     param["enable_supply_limit_hydrogen"] = all_models["EnergyCosts"].enable_supply_limit_hydrogen  
     param["supply_limit_hydrogen"]        = all_models["EnergyCosts"].supply_limit_hydrogen * 1000  #kWh 
     
     
     # Waste
+    param["enable_supply_waste"]       = all_models["EnergyCosts"].enable_supply_waste
     param["price_waste"]               = all_models["EnergyCosts"].price_waste  # EUR/kW
     param["enable_supply_limit_waste"] = all_models["EnergyCosts"].enable_supply_limit_waste  
     param["supply_limit_waste"]        = all_models["EnergyCosts"].supply_limit_waste * 1000  #kWh  
@@ -575,9 +580,9 @@ def load_params(all_models, flags):
 
     
     ### General ###
-    param["optim_focus"] = all_models["General"].optim_focus 
-    param["interest_rate"] = all_models["General"].interest_rate / 100  # convert from percentage to number
-    param["observation_time"] = int(all_models["General"].project_lifetime)
+    param["optim_focus"]       = all_models["General"].optim_focus 
+    param["interest_rate"]     = all_models["General"].interest_rate / 100
+    param["observation_time"]  = int(all_models["General"].project_lifetime)
     param["peak_dem_met_conv"] = all_models["General"].peak_dem_met_conv 
     # Number of design days assigned on the top of this script: 'all_models["General"].design_days'
     
@@ -587,6 +592,19 @@ def load_params(all_models, flags):
     param["ref"]["cop_hp"]     = all_models["ReferenceCase"].cop_ref_hp
     param["ref"]["cop_cc"]     = all_models["ReferenceCase"].cop_ref_cc
     param["ref"]["enable_chp"] = all_models["ReferenceCase"].enable_ref_chp
+    
+    
+    ### Catch common input errors of user ###
+    
+    # Electricity feed-in revenue larger than electricity price
+    if param["enable_feed_in_el"] and not param["enable_supply_limit_el"]: 
+        if param["revenue_feed_in_el"] > param["price_supply_el"]:
+            flags["unconstrained_el_feed_in"] = False
+    
+    # Gas feed-in revenue larger than gas price
+    if param["enable_feed_in_gas"] and not param["enable_supply_limit_gas"]: 
+        if param["revenue_feed_in_gas"] > param["price_supply_gas"]:
+            flags["unconstrained_gas_feed_in"] = False
     
     
     ################################################################
@@ -602,13 +620,10 @@ def load_params(all_models, flags):
     # print(param)
     # print("=== TECHNOLOGIES ===")
     # print(devs)
-
     
-    # Calculate values for postprocessing
+    # Calculate values for post-processing
     result_dict = calc_monthly_dem(dem_uncl, param_uncl, result_dict)
 
-    
-    #import pdb; pdb.set_trace();
     return param, devs, dem, result_dict, flags
 
     
@@ -618,7 +633,7 @@ def load_params(all_models, flags):
 
 def calc_reference(devs, dem, param, dem_uncl, result_dict):
     """
-    Calculation of reference case/scenario.
+    Calculation of reference scenario/system.
     """
     
     days = range(param["n_clusters"])
@@ -775,19 +790,12 @@ def calc_reference(devs, dem, param, dem_uncl, result_dict):
     
     # Sum up
     result_dict["ref"] = {}
-    
     result_dict["ref"]["heat_hp_total"] = int(sum(sum(heat_hp[d][t] for t in time_steps) * param["day_weights"][d] for d in days)/1000)
-    
     result_dict["ref"]["el_chp_total"] = int(sum(sum(el_chp[d][t] for t in time_steps) * param["day_weights"][d] for d in days)/1000)    
-    
     result_dict["ref"]["heat_boi_total"] = int(sum(sum(heat_boiler[d][t] for t in time_steps) * param["day_weights"][d] for d in days)/1000)    
-    
     result_dict["ref"]["cool_cc_total"] = int(sum(sum(cool_chiller[d][t] for t in time_steps) * param["day_weights"][d] for d in days)/1000) 
-    
     result_dict["ref"]["hydrogen_elyz_total"] = int(sum(sum(h2_elyz[d][t] for t in time_steps) * param["day_weights"][d] for d in days)/1000) 
-    
     result_dict["ref"]["el_dem_total"] = int(sum(sum(el_dem[d][t] for t in time_steps) * param["day_weights"][d] for d in days)/1000)
-    
     result_dict["ref"]["gas_dem_total"] = int(sum(sum(gas_dem[d][t] for t in time_steps) * param["day_weights"][d] for d in days)/1000)
 
     
@@ -919,10 +927,8 @@ def calc_reference(devs, dem, param, dem_uncl, result_dict):
     result_dict["ref"]["gas_grid_cap"] = np.max([np.max(gas_dem[d]) for d in days])
     
     result_dict["ref"]["gas_costs"] = result_dict["ref"]["gas_grid_cap"] * param["price_cap_gas"] + result_dict["ref"]["gas_dem_total"]* 1000 * param["price_supply_gas"] # cap price and supply price
-    #print("Gas costs: " + str(result_dict["ref"]["gas_costs"]))
     
     result_dict["ref"]["el_costs"] = result_dict["ref"]["el_grid_cap"] * param["price_cap_el"] + result_dict["ref"]["el_dem_total"]*1000 * param["price_supply_el"] # cap price and supply price    
-    #print("El costs: " + str(result_dict["ref"]["el_costs"]))
     
     # CO2 tax
     result_dict["ref"]["co2_costs"] = result_dict["ref"]["gas_dem_total"] * param["co2_gas"] * param["co2_tax"] * 1000
@@ -934,8 +940,6 @@ def calc_reference(devs, dem, param, dem_uncl, result_dict):
         + (devs["CC"]["ann_factor"] + devs["CC"]["cost_om"]) * devs["CC"]["inv_var"] * result_dict["ref"]["chiller_cap"]
         + (devs["ELYZ"]["ann_factor"] + devs["ELYZ"]["cost_om"]) * devs["ELYZ"]["inv_var"] * result_dict["ref"]["elyz_cap"])
         
-    #print("invest_om: " + str(result_dict["ref"]["invest_om"]))
-    
     result_dict["ref"]["tac"] = int(result_dict["ref"]["invest_om"] 
                                + result_dict["ref"]["gas_costs"] 
                                + result_dict["ref"]["el_costs"]
@@ -949,7 +953,8 @@ def calc_reference(devs, dem, param, dem_uncl, result_dict):
     
     return result_dict
 
-#%%
+
+    
 def calc_annual_investment(devs, param):
     """
     Calculation of total investment costs including replacements (based on VDI 2067-1, pages 16-17).
@@ -982,7 +987,7 @@ def calc_annual_investment(devs, param):
         # Number of required replacements
         n = int(math.floor(observation_time / life_time))
         
-        # Inestment for replcaments
+        # Investment for replacements
         invest_replacements = sum((q ** (-i * life_time)) for i in range(1, n+1))
 
         # Residual value of final replacement
@@ -994,12 +999,12 @@ def calc_annual_investment(devs, param):
         else:
             devs[device]["ann_factor"] = ( 1 + invest_replacements - res_value) * CRF 
             
-    # Convert other costs
+    # Save capital recovery factor
     param["CRF"] = CRF
-       
 
     return devs, param
 
+    
     
 def calc_monthly_dem(dem_uncl, param_uncl, result_dict):
 
@@ -1037,6 +1042,9 @@ def calc_monthly_dem(dem_uncl, param_uncl, result_dict):
 
     
 def calc_WT_power(devs, param):
+    """
+    According to data sheet of wind turbine Enercon E40.
+    """
 
     power_curve = {0:  (0.0,    0.00),
                    1:  (2.4,    0.00),
