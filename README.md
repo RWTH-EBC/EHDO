@@ -25,7 +25,7 @@ This repository contains 5 files:
 
 The EHDO webtool has been presented in the following publications:
 
-No publication yet. [Link](http://www.example.com/)
+No publication yet.
 
 
 ## License & copyright
