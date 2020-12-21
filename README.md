@@ -25,7 +25,7 @@ This repository contains 5 files:
 
 The EHDO webtool has been presented in the following publications:
 
-No publication yet.
+<i>EHDO: A free and open-source webtool for designing and optimizing multi-energy systems based on MILP.</i> M. Wirtz, P. Remmen, D. Müller. Computer Applications in Engineering Education, 2020. DOI: 10.1002/cae.22352. https://onlinelibrary.wiley.com/doi/10.1002/cae.22352 [Open Access]
 
 
 ## License & copyright
