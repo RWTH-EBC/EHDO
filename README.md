@@ -7,6 +7,8 @@ EHDO can be accessed here: https://ehdo.eonerc.rwth-aachen.de
 
 EHDO (Energy hub design optimization) is a user-friendly, free webtool for planning complex multi-energy systems. It is used in academic teaching in **Energy Engineering** at **RWTH Aachen University**. 
 
+Due to frequent requests for a stand-alone version of the optimization model, we also share the folder **plug_and_play_model** which contains the EHDO optimization model in a form that can be **run directly in a Python environment** (needs a Gurobi license, no webframework needed).
+
 ## Files
 
 This repository contains 5 files:
